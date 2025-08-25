@@ -15,19 +15,13 @@ will execute given their volume.
 
 Let us first consider how prices form when a market order
 hits the order book. Let us commence by considering the example order book:
-\[
-\begin{array}{l|l}
-\text{Price}&
-\text{Volume}
-\\\hline
-    £103.00 & 25 \\
-    £102.50 & 45 \\
-    £102.00 & 35 \\
-    £101.50 & 50 
-\end{array}
-\]
-<br>
-<br>
+| Price   | Volume |
+|---------|--------|
+| £103.00 | 25     |
+| £102.50 | 45     |
+| £102.00 | 35     |
+| £101.50 | 50     |
+
 We notice a couple of things on this order book representation,
 * Prices are quantise (in this example to the nearest
   £0.50), so not every price can be selected when
@@ -40,27 +34,21 @@ we observe that we will consume the 25 units available at £103.00,
 and the 45 units at £102.50 entirely. The remaining 30 units of our 
 order will be filled by partially executing on the order at £102.00.
 In summary our order is executed by consuming
-\[
- \begin{array}{l|l}
- \text{Execution Price} &
- \text{Units}
- \\\hline
-     £103.00 & 25  \\
-     £102.50 & 45  \\
-     £102.00 & 30 
- \end{array}
-\]
+
+| Execution Price | Units |
+|-----------------|-------|
+| £103.00        | 25    |
+| £102.50        | 45    |
+| £102.00        | 30    |
+
 for a final execution price of £10,247.50. Immediately after executing
 our order the order book will look like
-\[
- \begin{array}{l|l}
- \text{Price}&
- \text{Volume}
- \\\hline
-     £102.00 & 5 \\
-     £101.50 & 50 
- \end{array}
-\]
+
+| Price   | Volume |
+|---------|--------|
+| £102.00 | 5      |
+| £101.50 | 50     |
+
 Algorithms to compute execution prices are fundamental to many
 trading algorithms, either to exploit arbitrage opportunities
 between exchanges, or to execute on a signal predicted by an
@@ -127,21 +115,12 @@ the performance differential on a 12 Core AMD Ryzen 3900x. The
 key differentiator between these two for our purpose is that the 
 AMD processor offers full support for AVX-2 vectorisation.
 
-\[
- \begin{array}{l|l}
- \text{System}&
- \text{Benchmark}&
- \text{Baseline duration}&
- \text{SIMD duration} &
- \text{SIMD speed-up}
- \\\hline
- \text{M2 MacBook} & \text{Full Depth} & 5.956 \text{s} & 4.481\text{s} & 1.33 \times \\
- \text{M2 MacBook} & \text{5% Depth}   & 0.317 \text{s} & 0.212\text{s} & 1.49 \times \\
- \text{AMD 3900x} & \text{Full Depth}  & 7.957 \text{s} & 4.254\text{s} & 1.87 \times \\
- \text{AMD 3900x} & \text{5% Depth}    & 0.430 \text{s} & 0.226\text{s} & 1.90 \times \\
- \end{array}
-\]
-
+| System       | Benchmark   | Baseline Duration | SIMD Duration | SIMD Speed-up |
+|-------------|------------|---------------------|---------------|---------------|
+| M2 MacBook  | Full Depth | 5.956 s            | 4.481 s       | 1.33×        |
+| M2 MacBook  | 5% Depth   | 0.317 s            | 0.212 s       | 1.49×        |
+| AMD 3900x   | Full Depth | 7.957 s            | 4.254 s       | 1.87×        |
+| AMD 3900x   | 5% Depth   | 0.430 s            | 0.226 s       | 1.90×        |
 We observe that both systems benefitted from the SIMD implementation for the same underlying
 algorithm and data structure. Additionally, we observe a greater, almost 2x improvement,
 when applying the SIMD optimisations on the AMD processor, which is in line with our
