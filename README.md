@@ -121,7 +121,8 @@ AMD processor offers full support for AVX-2 vectorisation.
 | M2 MacBook  | 5% Depth   | 0.317 s            | 0.212 s       | 1.49×        |
 | AMD 3900x   | Full Depth | 7.957 s            | 4.254 s       | 1.87×        |
 | AMD 3900x   | 5% Depth   | 0.430 s            | 0.226 s       | 1.90×        |
-We observe that both systems benefitted from the SIMD implementation for the same underlying
+
+We observe that both systems benefited from the SIMD implementation for the same underlying
 algorithm and data structure. Additionally, we observe a greater, almost 2x improvement,
 when applying the SIMD optimisations on the AMD processor, which is in line with our
 expectation, due to the better vectorisation support on this platform.
