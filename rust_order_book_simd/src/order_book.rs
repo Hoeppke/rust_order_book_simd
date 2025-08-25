@@ -44,7 +44,6 @@ impl OrderInfo{
 pub struct OrderInfo4 {
     prices_4: u64x4,
     volumes_4: f64x4,
-    price_dist: u64,  // expected distance between two prices
 }
 
 impl OrderInfo4{
@@ -73,7 +72,6 @@ impl OrderInfo4{
         let output_data: OrderInfo4 = Self {
             prices_4: u64x4::from_array(prices),
             volumes_4: f64x4::from_array(volumes),
-            price_dist,
         };
         return output_data;
     }
@@ -228,7 +226,6 @@ pub struct OrderBook{
 }
 
 impl OrderBook {
-
     pub fn new() -> Self{
         return Self{buy_orders: Vec::new()};
     }
