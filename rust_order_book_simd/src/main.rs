@@ -20,8 +20,8 @@ fn create_order_book_simd(pdist: u64, num_orders: usize) -> OrderBookSimd {
     return order_book;
 }
 
-fn run_order_book_simd(order_book: &OrderBookSimd){
-    let total_vol = order_book.get_total_volume();
+fn run_order_book_simd(order_book: &OrderBookSimd, vfact: f64){
+    let total_vol = order_book.get_total_volume() * vfact;
     let n: usize = 1000;
     let volumes: Vec<f64> = (0..n).map(|i| (i as f64) / (n as f64) * total_vol).collect();
     let mut total_prices: f64 = 0.0;
@@ -35,7 +35,13 @@ fn run_order_book_simd(order_book: &OrderBookSimd){
 #[bench]
 fn bench_orderbook_simd(b: &mut test::Bencher) {
     let order_book = create_order_book_simd(100, 5_000);
-    b.iter(|| run_order_book_simd(&order_book));
+    b.iter(|| run_order_book_simd(&order_book, 1.0f64));
+}
+
+#[bench]
+fn bench_orderbook_simd_low(b: &mut test::Bencher) {
+    let order_book = create_order_book_simd(100, 5_000);
+    b.iter(|| run_order_book_simd(&order_book, 0.05f64));
 }
 
 
@@ -52,8 +58,8 @@ fn create_order_book(pdist: u64, num_orders: usize) -> OrderBook {
     return order_book;
 }
 
-fn run_order_book(order_book: &OrderBook){
-    let total_vol = order_book.get_total_volume();
+fn run_order_book(order_book: &OrderBook, vfact: f64){
+    let total_vol = order_book.get_total_volume()*vfact;
     let n: usize = 1000;
     let volumes: Vec<f64> = (0..n).map(|i| (i as f64) / (n as f64) * total_vol).collect();
     let mut total_prices: f64 = 0.0;
@@ -67,7 +73,13 @@ fn run_order_book(order_book: &OrderBook){
 #[bench]
 fn bench_orderbook(b: &mut test::Bencher) {
     let order_book = create_order_book(100, 5_000);
-    b.iter(|| run_order_book(&order_book));
+    b.iter(|| run_order_book(&order_book, 1.0f64));
+}
+
+#[bench]
+fn bench_orderbook_low(b: &mut test::Bencher) {
+    let order_book = create_order_book(100, 5_000);
+    b.iter(|| run_order_book(&order_book, 0.05f64));
 }
 
 fn main() {
